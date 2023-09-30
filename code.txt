@@ -1,0 +1,31 @@
+1. Show me the product name with the highest total price for all order dates before 13 january
+
+select  b.product_name ,sum(b.price) from `sql-class1-395911.memberdata.salesclass` as a
+join `sql-class1-395911.memberdata.menudata`  as b
+on a.product_id=b.product_id
+where order_date<'2021-01-13'
+group by b.product_name
+order by sum(price) desc
+limit 1
+
+2.show me all the products bought by Andy and Brian after becoming a member
+select a.customer_id, c.product_name,a.order_date,b.join_date from `sql-class1-395911.memberdata.salesclass`  as a
+join  `sql-class1-395911.memberdata.memberdata` as b
+on a.customer_id=b.customer_id
+join `sql-class1-395911.memberdata.menudata` as c
+on  a.product_id=c.product_id
+where a.order_date > b.join_date
+
+3.write a case statement to separate product names.. if it is dosa or puttu then call it dosa family.. otherwise call it idly family..
+now show the total price per this case column.. 
+
+select
+case
+when a.product_name in("dosa","puttu") then "Dosa family"
+else "idly family"
+end as Family, sum(a.price)
+from `sql-class1-395911.memberdata.menudata`as a
+join `sql-class1-395911.memberdata.salesclass` as b
+on a.product_id=b.product_id 
+group by Family
+order by sum(a.price)
